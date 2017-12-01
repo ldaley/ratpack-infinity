@@ -1,0 +1,15 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>time=%d{HH:mm:ss.SSS}, loggingId=%X{loggingId}, level=%-5level, logger=%logger{36}, message=%msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="ratpack.config.internal.ConfigDataReloadInformant" level="INFO"/>
+    <logger name="wiremock.org.eclipse.jetty" level="INFO"/>
+    <logger name="org.apache" level="INFO"/>
+    <logger name="io.netty.handler.ssl.SslHandler" level="WARN"/>
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
