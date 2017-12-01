@@ -27,15 +27,19 @@ public class InfinityAction implements Action<Execution> {
 
     private Promise<Void> poll() {
         return getFoo()
-            .map(f -> {
-                LOG.debug("foo={}", f.name);
-                return null;
-            })
+            .flatMap(this::useFoo)
             .flatMap(v -> this.poll());
     }
 
     private Promise<Foo> getFoo() {
         return Blocking.get(Foo::new);
+    }
+
+    private Promise<Void> useFoo(Foo foo) {
+        return Blocking.get(() -> {
+            LOG.debug("foo={}", foo.name);
+            return null;
+        });
     }
 
     private static class Foo {
