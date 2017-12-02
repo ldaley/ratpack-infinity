@@ -30,7 +30,7 @@ public class RatpackMain {
 
                     bindings.moduleConfig(
                         InfinityModule.class,
-                        new InfinityModule.Config()
+                        new InfinityModule.Config().infiniteFork(Boolean.getBoolean("infiniteFork"))
                     );
 
                     bindings.bindInstance(ObjectMapper.class, objectMapper);

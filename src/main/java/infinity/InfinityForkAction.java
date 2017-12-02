@@ -9,17 +9,22 @@ import ratpack.func.Action;
 
 import java.util.UUID;
 
-public class InfinityAction implements Action<Execution> {
+public class InfinityForkAction implements Action<Execution> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(InfinityAction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InfinityForkAction.class);
 
-    public InfinityAction() {
+    public InfinityForkAction() {
     }
 
     @Override
     public void execute(Execution execution) throws Exception {
         poll()
             .result(r -> {
+                if (r.isSuccess()) {
+                    Execution.fork().start(this);
+                    return;
+                }
+
                 Throwable error = r.getThrowable();
                 LOG.error("Unexpected error", error);
             });
@@ -27,8 +32,7 @@ public class InfinityAction implements Action<Execution> {
 
     private Promise<Void> poll() {
         return getFoo()
-            .flatMap(this::useFoo)
-            .flatMap(v -> this.poll());
+            .flatMap(this::useFoo);
     }
 
     private Promise<Foo> getFoo() {
